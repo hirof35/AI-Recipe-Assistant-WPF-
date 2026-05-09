@@ -1,0 +1,113 @@
+<Window x:Class="RecipeApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="AI Recipe Assistant" Height="600" Width="900"
+        Background="#F5F6F7" Loaded="Window_Loaded">
+
+    <Window.Resources>
+        <!-- ボタンの基本スタイル：ホバー時に色を変える -->
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="4"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="280"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- 左パネル：サイドバー -->
+        <Grid Grid.Column="0" Background="#2C3E50">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Margin="20,25">
+                <!-- 38行目付近：LetterSpacing="2" を消すだけ -->
+                <TextBlock Text="RECIPE" Foreground="#3498DB" FontSize="12" FontWeight="Black"/>
+                <TextBlock Text="お気に入り履歴" Foreground="White" FontSize="20" FontWeight="Bold" Margin="0,5,0,0"/>
+            </StackPanel>
+
+            <ListBox x:Name="lstHistory" Grid.Row="1" Background="Transparent" Foreground="#ECF0F1" 
+                     BorderThickness="0" SelectionChanged="lstHistory_SelectionChanged" Margin="10,0">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Padding" Value="10"/>
+                        <Setter Property="Margin" Value="0,2"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
+        </Grid>
+
+        <!-- 右パネル：メインコンテンツ -->
+        <Grid Grid.Column="1" Margin="25">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- 検索バー領域 -->
+            <Grid Grid.Row="0" Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox x:Name="txtQuery" Grid.Column="0" Height="40" FontSize="16"
+                         VerticalContentAlignment="Center" Padding="10,0"
+                         BorderBrush="#DCDFE6" BorderThickness="1">
+                    <!-- Enterキーで検索できるように設定するためのヒント -->
+                </TextBox>
+
+                <Button x:Name="btnSearch" Grid.Column="1" Content="Wikiで検索" Click="btnSearch_Click" 
+        Width="100" Height="40" Margin="10,0" Background="#3498DB" Foreground="White" FontWeight="Bold"/>
+
+                <Button Grid.Column="2" Content="保存" Click="btnSave_Click" 
+                        Width="80" Height="40" Background="#27AE60" Foreground="White" FontWeight="Bold"/>
+            </Grid>
+
+            <!-- レシピ詳細表示 -->
+            <Border Grid.Row="1" Background="White" CornerRadius="8" Padding="25">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="15" Direction="270" Opacity="0.05" ShadowDepth="2"/>
+                </Border.Effect>
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <!-- 料理名 -->
+                        <TextBox x:Name="lblRecipeTitle" FontSize="32" FontWeight="Bold" 
+                                 BorderThickness="0" Background="Transparent" Margin="0,0,0,15"
+                                 Text="料理名" Foreground="#2C3E50"/>
+
+                        <!-- 画像：角を丸くして影をつける -->
+                        <Border CornerRadius="8" ClipToBounds="True" HorizontalAlignment="Left" MaxWidth="500">
+                            <Image x:Name="imgRecipe" Stretch="Uniform" Visibility="Collapsed" />
+                        </Border>
+
+                        <Separator Margin="0,20" Background="#F0F2F5"/>
+
+                        <TextBlock Text="材料と手順" FontSize="14" FontWeight="Bold" Foreground="#909399" Margin="0,0,0,10"/>
+
+                        <!-- テキストエディタ風の設定 -->
+                        <TextBox x:Name="txtResult" AcceptsReturn="True" TextWrapping="Wrap" 
+                         FontSize="15" BorderThickness="0" Foreground="#34495E"
+                        FontFamily="Meiryo" />
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
